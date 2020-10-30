@@ -14,6 +14,7 @@ $: score = 0;
 
   
 function handleKeydown(event) {
+		console.log('test');
 		key = event.key;
 		keyCode = event.keyCode;
 		// right = 39
