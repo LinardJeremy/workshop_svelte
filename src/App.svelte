@@ -2,7 +2,7 @@
 	import Snake from "./Snake.svelte"
 	import Button from "./Button.svelte"
 	import Food from "./Food.svelte"
-	import Event, { hello } from "./Event.svelte"
+	// import Event, { makeAutomaticMove } from "./Event.svelte"
 	let squareSize = 40; // in px
 	let gameWidth = 800;
 	let gameHeight = 400;
@@ -13,7 +13,18 @@
 	$: foodPosY = randomPos(gameHeight);
 	$: score = 0;
 
-  
+	function collide(){
+		if (snakePosX < foodPosX + squareSize &&
+			snakePosX + squareSize > foodPosX &&
+			snakePosY < foodPosY + squareSize &&
+			squareSize + snakePosY > foodPosY) {  
+				console.log("collide");
+				foodPosY = randomPos(gameHeight);
+				foodPosX = randomPos(gameWidth);
+				score +=1
+		}
+	 }
+
 	function handleKeydown(event) {
 		randomPos(gameWidth);
 		let keyCode = event.keyCode;
@@ -37,16 +48,39 @@
 			snakePosY -= squareSize;
 			snakeDirection = "rotateTop"
 		}
-		if (snakePosX < foodPosX + squareSize &&
-			snakePosX + squareSize > foodPosX &&
-			snakePosY < foodPosY + squareSize &&
-			squareSize + snakePosY > foodPosY) {  
-				console.log("collide");
-				foodPosY = randomPos(gameHeight);
-				foodPosX = randomPos(gameWidth);
-				score +=1
-		}
+		// if (snakePosX < foodPosX + squareSize &&
+		// 	snakePosX + squareSize > foodPosX &&
+		// 	snakePosY < foodPosY + squareSize &&
+		// 	squareSize + snakePosY > foodPosY) {  
+		// 		console.log("collide");
+		// 		foodPosY = randomPos(gameHeight);
+		// 		foodPosX = randomPos(gameWidth);
+		// 		score +=1
+		// }
+		collide()
 	}
+    
+	// automatic move 
+
+	function makeAutomaticMove(){
+        setInterval(()=> {
+			if (snakeDirection === "rotateRight"){
+			snakePosX += squareSize;
+			}
+			if (snakeDirection === "rotateLeft"){
+			snakePosX -= squareSize;
+			}
+			if (snakeDirection === "rotateBottom"){
+				snakePosY += squareSize;
+			}
+			if (snakeDirection === "rotateTop"){
+				snakePosY -= squareSize;
+			}
+			collide()
+        },1000)
+  }
+  makeAutomaticMove();
+//   automatic move
 
 	function randomPos(max) {
 		let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
