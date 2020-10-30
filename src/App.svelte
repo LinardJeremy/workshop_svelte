@@ -36,9 +36,9 @@ function handleKeydown(event) {
 			newTopPos -=20
 			changeRotate = "rotateTop"
 		}
-		if (newPos < posFoodX + 50 &&
+		if (newPos < posFoodX + 40 &&
   			newPos + 40 > posFoodX &&
-  			newTopPos < posFoodY + 50 &&
+  			newTopPos < posFoodY + 40 &&
   		40 + newTopPos > posFoodY) {  
 			  console.log("collide");
 			  posFoodY = (Math.random() * 300)
@@ -56,7 +56,7 @@ function handleKeydown(event) {
 	<h1>Votre score est de {score}</h1>
 	<div class="gameArea"> 
 		<Snake pos={newPos} posTop={newTopPos} rotation={changeRotate}/>
-		<Food posFoodLeft={posFoodX} posFoodTop={posFoodY} />
+		<Food posFoodLeft={0} posFoodTop={0} />
 	</div>
 </main>
 <Button  text={"droite"} />
@@ -78,7 +78,7 @@ function handleKeydown(event) {
 	width: 600px;
 	height: 300px;
 	border: solid black 1px;
-	margin-left: auto;
+	margin-left: 100pX;
 	margin-right: auto;
 } 
 </style>
