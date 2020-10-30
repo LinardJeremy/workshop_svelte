@@ -1,84 +1,77 @@
 <script>
-import Snake from "./Snake.svelte"
-import Button from "./Button.svelte"
-import Food from "./Food.svelte"
- import Event, { hello } from "./Event.svelte"
-$: newPos = 0;
-$: newTopPos = 0;
-let key;
-let keyCode; 
-let changeRotate;
-$: posFoodX = (Math.random() * 600)
-$: posFoodY = (Math.random() * 300)
-$: score = 0;
+	import Snake from "./Snake.svelte"
+	import Button from "./Button.svelte"
+	import Food from "./Food.svelte"
+	import Event, { hello } from "./Event.svelte"
+	let squareSize = 40; // in px
+	let gameWidth = 800;
+	let gameHeight = 400;
+	$: snakePosX = 0;
+	$: snakePosY = 0;
+	let snakeDirection;
+	$: foodPosX = randomPos(gameWidth);
+	$: foodPosY = randomPos(gameHeight);
+	$: score = 0;
 
   
-function handleKeydown(event) {
-		key = event.key;
-		keyCode = event.keyCode;
+	function handleKeydown(event) {
+		randomPos(gameWidth);
+		let keyCode = event.keyCode;
 		// right = 39
 		if (keyCode === 39){
-			newPos +=20
-			changeRotate = "rotateRight";
+			snakePosX += squareSize;
+			snakeDirection = "rotateRight";
 		}
 		// left = 37
 		if (keyCode === 37){
-			newPos -=20
-			changeRotate = "rotateLeft"
+			snakePosX -= squareSize;
+			snakeDirection = "rotateLeft"
 		}
 		// bottom = 40
 		if (keyCode === 40){
-			newTopPos +=20
-			changeRotate ="rotateBottom"
+			snakePosY += squareSize;
+			snakeDirection ="rotateBottom"
 		}
 		// top = 38
 		if (keyCode === 38){
-			newTopPos -=20
-			changeRotate = "rotateTop"
+			snakePosY -= squareSize;
+			snakeDirection = "rotateTop"
 		}
-		if (newPos < posFoodX + 40 &&
-  			newPos + 40 > posFoodX &&
-  			newTopPos < posFoodY + 40 &&
-  		40 + newTopPos > posFoodY) {  
-			  console.log("collide");
-			  posFoodY = (Math.random() * 300)
-			  posFoodX = (Math.random() * 600)
-			  score +=1
-		  }
-  }
- 
+		if (snakePosX < foodPosX + squareSize &&
+			snakePosX + squareSize > foodPosX &&
+			snakePosY < foodPosY + squareSize &&
+			squareSize + snakePosY > foodPosY) {  
+				console.log("collide");
+				foodPosY = randomPos(gameHeight);
+				foodPosX = randomPos(gameWidth);
+				score +=1
+		}
+	}
 
+	function randomPos(max) {
+		let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
+		return pos;
+	}
 </script>
-
-
 
 <main>
 	<h1>Votre score est de {score}</h1>
-	<div class="gameArea"> 
-		<Snake pos={newPos} posTop={newTopPos} rotation={changeRotate}/>
-		<Food posFoodLeft={0} posFoodTop={0} />
+	<div class="gameArea" style="width: {gameWidth}px; height: {gameHeight}px;"> 
+		<Snake pos={snakePosX} posTop={snakePosY} rotation={snakeDirection}/>
+		<Food posFoodLeft={foodPosX} posFoodTop={foodPosY} />
 	</div>
 </main>
-<Button  text={"droite"} />
-<Button text={"gauche"}/>
 
 <svelte:window on:keydown={handleKeydown}/>
 
 
-<div style="text-align: center">
-	{#if key}
-		<kbd>{key === ' ' ? 'Space' : key}</kbd>
-		<p>{keyCode}</p>
-	{:else}
-		<p>Focus this window and press any key</p>
-	{/if}
-</div>
 <style>
-.gameArea{
-	width: 600px;
-	height: 300px;
-	border: solid black 1px;
-	margin-left: 100pX;
-	margin-right: auto;
-} 
+	.gameArea{
+		/* width: 800px;
+		height: 400px; */
+		position: relative;
+		border: solid black 1px;
+		margin-left: auto;
+		margin-right: auto;
+	} 
 </style>
