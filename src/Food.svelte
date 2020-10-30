@@ -8,6 +8,7 @@ export let imgSrc = "./img/mouse.png";
        height: 50px;
        width: 50px;
        position: relative;
+       border: black solid 1px;
    }
     .imgFood {
         height: 100%;
