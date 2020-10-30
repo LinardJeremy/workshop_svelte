@@ -1,6 +1,6 @@
 <script>
 export let snake = 'snake';
-export  let pos ;
+export let pos ;
 export let posTop ;
 export let rotation ; 
 
@@ -8,7 +8,7 @@ export let rotation ;
 <style>
     .divTest{
         background-color: green;
-        position: fixed;
+        position: absolute;
         height: 40px;
         width: 40px;
         
@@ -47,7 +47,7 @@ export let rotation ;
 
 <div class="divTest {rotation}" id={snake} style="left :{pos}px; top:{posTop}px;">
 <div class="eyes">
-
+    
 </div>
 <div class="eyes2">
 
