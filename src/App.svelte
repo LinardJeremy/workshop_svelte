@@ -1,87 +1,77 @@
 <script>
-	export let size;
-	let grid = [];
-	for (let i = 0; i < size[0]; i++) {
-		let row = [];
-		for (let j = 0; j < size[1]; j++) {
-			row.push("empty");
+	import Snake from "./Snake.svelte"
+	import Button from "./Button.svelte"
+	import Food from "./Food.svelte"
+	import Event, { hello } from "./Event.svelte"
+	let squareSize = 40; // in px
+	let gameWidth = 800;
+	let gameHeight = 400;
+	$: snakePosX = 0;
+	$: snakePosY = 0;
+	let snakeDirection;
+	$: foodPosX = randomPos(gameWidth);
+	$: foodPosY = randomPos(gameHeight);
+	$: score = 0;
+
+  
+	function handleKeydown(event) {
+		randomPos(gameWidth);
+		let keyCode = event.keyCode;
+		// right = 39
+		if (keyCode === 39){
+			snakePosX += squareSize;
+			snakeDirection = "rotateRight";
 		}
-		grid.push(row);
+		// left = 37
+		if (keyCode === 37){
+			snakePosX -= squareSize;
+			snakeDirection = "rotateLeft"
+		}
+		// bottom = 40
+		if (keyCode === 40){
+			snakePosY += squareSize;
+			snakeDirection ="rotateBottom"
+		}
+		// top = 38
+		if (keyCode === 38){
+			snakePosY -= squareSize;
+			snakeDirection = "rotateTop"
+		}
+		if (snakePosX < foodPosX + squareSize &&
+			snakePosX + squareSize > foodPosX &&
+			snakePosY < foodPosY + squareSize &&
+			squareSize + snakePosY > foodPosY) {  
+				console.log("collide");
+				foodPosY = randomPos(gameHeight);
+				foodPosX = randomPos(gameWidth);
+				score +=1
+		}
+	}
+
+	function randomPos(max) {
+		let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
+		return pos;
 	}
 </script>
 
 <main>
-	<h1>Snake</h1>
-	<table class="grid">
-		{#each grid as row}
-			<tr class="row">
-			{#each row as cel}
-				<td class="cel {cel}"></td>
-			{/each}
-			</tr>
-		{/each}
-	</table>
+	<h1>Votre score est de {score}</h1>
+	<div class="gameArea" style="width: {gameWidth}px; height: {gameHeight}px;"> 
+		<Snake pos={snakePosX} posTop={snakePosY} rotation={snakeDirection}/>
+		<Food posFoodLeft={foodPosX} posFoodTop={foodPosY} />
+	</div>
 </main>
 
+<svelte:window on:keydown={handleKeydown}/>
+
+
 <style>
-	main {
-		text-align: center;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 2rem;
-	}
-
-	/* @media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	} */
-
-	.grid {
-		height: fit-content;
-		width: fit-content;
-		padding: 0;
-		margin: 0;
-		border-spacing: 0;
-		border-collapse: collapse;
-	}
-
-	.row {
-		height: fit-content;
-		width: fit-content;
-		padding: 0;
-		margin: 0;
-	}
-
-	.cel {
-		height: 40px;
-		width: 40px;
-		padding: 0;
-		margin: 0;
-	}
-
-	.empty {
-		border: 1px solid black;
-		background-color: cornflowerblue;
-	}
-
-	.food {
-		border: 1px solid black;
-		background-color: red;
-	}
-
-	.snake {
-		background-color: green;
-	}
-
-	.head {
-	}
+	.gameArea{
+		/* width: 800px;
+		height: 400px; */
+		position: relative;
+		border: solid black 1px;
+		margin-left: auto;
+		margin-right: auto;
+	} 
 </style>
