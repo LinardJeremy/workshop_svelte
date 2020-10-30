@@ -5,10 +5,10 @@ export let imgSrc = "./img/mouse.png";
 </script>
 <style>
    .food {
-       height: 50px;
-       width: 50px;
-       position: relative;
-       border: black solid 1px;
+       height: 40px;
+       width: 40px;
+       position: absolute;
+       background-color: blue;
    }
     .imgFood {
         height: 100%;
@@ -17,6 +17,6 @@ export let imgSrc = "./img/mouse.png";
    
 </style>
 <div class="food" id="food" style="left :{posFoodLeft}px; top:{posFoodTop}px;">
-  <img class="imgFood" src={imgSrc} alt="mouse">
+  <!-- <img class="imgFood" src={imgSrc} alt="mouse"> -->
 
 </div>
