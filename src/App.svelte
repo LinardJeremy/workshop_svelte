@@ -2,16 +2,16 @@
 	import Snake from "./Snake.svelte"
 	import Button from "./Button.svelte"
 	import Food from "./Food.svelte"
-import { element } from "svelte/internal";
-	// import Event, { makeAutomaticMove } from "./Event.svelte"
-	let squareSize = 40; // in px
+	import { element } from "svelte/internal";
+	import  Random, {randomPos} from "./Random.svelte"
+	 let squareSize = 40; // in px
 	let gameWidth = 800;
 	let gameHeight = 400;
 	$: snakePosX = 0;
 	$: snakePosY = 0;
 	let snakeDirection;
-	$: foodPosX = randomPos(gameWidth);
-	$: foodPosY = randomPos(gameHeight);
+	$: foodPosX = randomPos(gameWidth, squareSize);
+	$: foodPosY = randomPos(gameHeight, squareSize);
 	$: score = 0;
 	$: gameLost =  false;
 	$: bodyPart = [{
@@ -30,8 +30,8 @@ function collide(){
 		snakePosY < foodPosY + squareSize &&
 		squareSize + snakePosY > foodPosY) {  
 			console.log("collide");
-			foodPosY = randomPos(gameHeight);
-			foodPosX = randomPos(gameWidth);
+			foodPosY = randomPos(gameHeight, squareSize);
+			foodPosX = randomPos(gameWidth, squareSize);
 			score +=1
 		}
 	 }
@@ -117,10 +117,10 @@ function collide(){
   makeAutomaticMove();
 //   automatic move
 
-	function randomPos(max) {
-		let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
-		return pos;
-	}
+	// function randomPos(max) {
+	// 	let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
+	// 	return pos;
+	// }
 </script>
 
 <main>
