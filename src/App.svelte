@@ -24,15 +24,15 @@ import { element } from "svelte/internal";
     }   
 ]
 
-	function collide(){
-		if (snakePosX < foodPosX + squareSize &&
-			snakePosX + squareSize > foodPosX &&
-			snakePosY < foodPosY + squareSize &&
-			squareSize + snakePosY > foodPosY) {  
-				console.log("collide");
-				foodPosY = randomPos(gameHeight);
-				foodPosX = randomPos(gameWidth);
-				score +=1
+function collide(){
+	if (snakePosX < foodPosX + squareSize &&
+		snakePosX + squareSize > foodPosX &&
+		snakePosY < foodPosY + squareSize &&
+		squareSize + snakePosY > foodPosY) {  
+			console.log("collide");
+			foodPosY = randomPos(gameHeight);
+			foodPosX = randomPos(gameWidth);
+			score +=1
 		}
 	 }
 		
@@ -44,6 +44,9 @@ import { element } from "svelte/internal";
 			bodyPart[i].top= snakePosY;
 			if (i === 1 && snakeDirection === "rotateRight"){
 				bodyPart[i].left = (snakePosX - squareSize);
+			}
+			if (i === 1 && snakeDirection === "rotateRight"){
+
 			}
 		}
 	}
