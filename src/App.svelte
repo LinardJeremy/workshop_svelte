@@ -2,6 +2,7 @@
 	import Snake from "./Snake.svelte"
 	import Button from "./Button.svelte"
 	import Food from "./Food.svelte"
+import { element } from "svelte/internal";
 	// import Event, { makeAutomaticMove } from "./Event.svelte"
 	let squareSize = 40; // in px
 	let gameWidth = 800;
@@ -12,6 +13,16 @@
 	$: foodPosX = randomPos(gameWidth);
 	$: foodPosY = randomPos(gameHeight);
 	$: score = 0;
+	$: gameLost =  false;
+	$: bodyPart = [{
+        top : 0,
+        left : 40
+    },
+    {
+        top :0,
+        left :80
+    }   
+]
 
 	function collide(){
 		if (snakePosX < foodPosX + squareSize &&
@@ -24,13 +35,28 @@
 				score +=1
 		}
 	 }
+		
+	//  follow the snake
+
+	function updatePositionBody(){
+		for (let i=0; i<bodyPart.length; i++){
+			bodyPart[i].left= snakePosX;
+			bodyPart[i].top= snakePosY;
+			if (i === 1 && snakeDirection === "rotateRight"){
+				bodyPart[i].left = (snakePosX - squareSize);
+			}
+		}
+	}
+	 
+     
 
 	function handleKeydown(event) {
 		randomPos(gameWidth);
+		updatePositionBody();
 		let keyCode = event.keyCode;
 		// right = 39
 		if (keyCode === 39){
-			snakePosX += squareSize;
+			snakePosX += squareSize
 			snakeDirection = "rotateRight";
 		}
 		// left = 37
@@ -59,11 +85,17 @@
 		// }
 		collide()
 	}
+	
     
 	// automatic move 
 
 	function makeAutomaticMove(){
         setInterval(()=> {
+			updatePositionBody();
+			// check if the game is lost
+			if (snakePosX >= 800 || snakePosX <0 || snakePosY >=400 || snakePosY <0) {
+					gameLost = true;
+			}
 			if (snakeDirection === "rotateRight"){
 			snakePosX += squareSize;
 			}
@@ -91,8 +123,12 @@
 <main>
 	<h1>Votre score est de {score}</h1>
 	<div class="gameArea" style="width: {gameWidth}px; height: {gameHeight}px;"> 
-		<Snake pos={snakePosX} posTop={snakePosY} rotation={snakeDirection}/>
+	{#if gameLost === false}
+		<Snake pos={snakePosX} posTop={snakePosY} rotation={snakeDirection} {bodyPart} />
 		<Food posFoodLeft={foodPosX} posFoodTop={foodPosY} />
+	{:else if gameLost === true}
+		<h2>Game lost !!!</h2>
+	{/if}
 	</div>
 </main>
 
