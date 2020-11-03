@@ -8,7 +8,7 @@ export let imgSrc = "./img/mouse.png";
        height: 40px;
        width: 40px;
        position: absolute;
-       background-color: blue;
+       /* background-color: blue; */
    }
     .imgFood {
         height: 100%;
@@ -17,6 +17,6 @@ export let imgSrc = "./img/mouse.png";
    
 </style>
 <div class="food" id="food" style="left :{posFoodLeft}px; top:{posFoodTop}px;">
-  <!-- <img class="imgFood" src={imgSrc} alt="mouse"> -->
+  <img class="imgFood" src={imgSrc} alt="mouse">
 
 </div>

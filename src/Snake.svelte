@@ -3,14 +3,17 @@ export let snake = 'snake';
 export let pos ;
 export let posTop ;
 export let rotation ; 
+export let bodyPart = [];
+
 
 </script>
 <style>
-    .divTest{
+    .snake{
         background-color: green;
         position: absolute;
         height: 40px;
         width: 40px;
+        border : black solid 1px;
         
     }
     .eyes {
@@ -45,13 +48,19 @@ export let rotation ;
     }
     </style>
 
-<div class="divTest {rotation}" id={snake} style="left :{pos}px; top:{posTop}px;">
+<div class="snake {rotation}" id={snake} style="left :{pos}px; top:{posTop}px;">
 <div class="eyes">
     
 </div>
 <div class="eyes2">
 
 </div>
+
 </div>
+{#each bodyPart as snakeBody, i}
+<div  class="snake" style="left :{snakeBody.left}px; top:{snakeBody.top}px;">
+
+</div>
+{/each}
 
 
