@@ -8,128 +8,130 @@
 	let gameWidth = 800;
 	let gameHeight = 400;
 	$: snakePosX = 0;
+	$: oldSnakePosX = 0;
 	$: snakePosY = 0;
+	$: oldSnakePosY = 0;
 	let snakeDirection;
 	$: foodPosX = randomPos(gameWidth, squareSize);
 	$: foodPosY = randomPos(gameHeight, squareSize);
 	$: score = 0;
 	$: gameLost =  false;
 	$: bodyPart = [{
-        top : 0,
-        left : 0
+		x : 0,
+        y : 0,
+		oldX : 0,
+		oldY : 0,
     },
     {
-        top :0,
-        left :0
+		x : 0,
+        y : 0,
+		oldX : 0,
+		oldY : 0,
 	},
 	{
-		top:0,
-		left: 0
+		x : 0,
+        y : 0,
+		oldX : 0,
+		oldY : 0,
 	} 
 ]
 
-function collide(){
-	if (snakePosX < foodPosX + squareSize &&
-		snakePosX + squareSize > foodPosX &&
-		snakePosY < foodPosY + squareSize &&
-		squareSize + snakePosY > foodPosY) {  
-			console.log("collide");
-			foodPosY = randomPos(gameHeight, squareSize);
-			foodPosX = randomPos(gameWidth, squareSize);
-			score +=1
+	function eating(){
+		if (snakePosX < foodPosX + squareSize &&
+			snakePosX + squareSize > foodPosX &&
+			snakePosY < foodPosY + squareSize &&
+			squareSize + snakePosY > foodPosY) {  
+				console.log("Miam");
+				foodPosY = randomPos(gameHeight, squareSize);
+				foodPosX = randomPos(gameWidth, squareSize);
+				score +=1
 		}
-	 }
-		
+	}
+	
 	//  body follow the snake
 
 	function updatePositionBody(){
-		for (let i=0; i<bodyPart.length; i++){
-			bodyPart[i].left= snakePosX;
-			bodyPart[i].top= snakePosY;
-			if ( i >=1 && snakeDirection === "rotateRight"){
-				bodyPart[i].left = (snakePosX - (squareSize * i));
+		for (let i=0; i < bodyPart.length; i++){
+			bodyPart[i].oldX = bodyPart[i].x;
+			bodyPart[i].oldY = bodyPart[i].y;
+			if ( i === 0 ) {
+				bodyPart[i].x = snakePosX;
+				bodyPart[i].y = snakePosY;
+			} else {
+				bodyPart[i].x = bodyPart[i-1].oldX;
+				bodyPart[i].y = bodyPart[i-1].oldY;
 			}
-			if ( i>=1 && snakeDirection === "rotateLeft"){
-				bodyPart[i].left = (snakePosX + (squareSize * i));
-
-			}
-			if (i>=1 && snakeDirection ==="rotateTop"){
-				bodyPart[i].left = snakePosX;
-				bodyPart[i].top = (snakePosY - (squareSize *i));
-			}
-			if (i>=1 && snakeDirection ==="rotateBottom"){
-				bodyPart[i].left = snakePosX;
-				bodyPart[i].top = (snakePosY  + (squareSize *i));
-			}
-			
 		}
 	}
-	 
+		
      
 // listen keyboard
 	function handleKeydown(event) {
-		randomPos(gameWidth);
 		let keyCode = event.keyCode;
 		// right = 39
-		if (keyCode === 39){
-			snakePosX += squareSize
+		if (keyCode === 39 && snakeDirection !== "rotateLeft"){
+			// snakePosX += squareSize
 			snakeDirection = "rotateRight";
 		}
 		// left = 37
-		if (keyCode === 37){
-			snakePosX -= squareSize;
+		if (keyCode === 37 && snakeDirection !== "rotateRight"){
+			// snakePosX -= squareSize;
 			snakeDirection = "rotateLeft"
 		}
 		// bottom = 40
-		if (keyCode === 40){
-			snakePosY += squareSize;
+		if (keyCode === 40 && snakeDirection !== "rotateTop"){
+			// snakePosY += squareSize;
 			snakeDirection ="rotateBottom"
 		}
 		// top = 38
-		if (keyCode === 38){
-			snakePosY -= squareSize;
+		if (keyCode === 38 && snakeDirection !== "rotateBottom"){
+			// snakePosY -= squareSize;
 			snakeDirection = "rotateTop"
 		}
-		// if (snakePosX < foodPosX + squareSize &&
-		// 	snakePosX + squareSize > foodPosX &&
-		// 	snakePosY < foodPosY + squareSize &&
-		// 	squareSize + snakePosY > foodPosY) {  
-		// 		console.log("collide");
-		// 		foodPosY = randomPos(gameHeight);
-		// 		foodPosX = randomPos(gameWidth);
-		// 		score +=1
-		// }
-		collide();
-		updatePositionBody();
-
 	}
 	
     
 	// automatic move 
 
-	function makeAutomaticMove(){
-        setInterval(()=> {
-			updatePositionBody();
+	function move(){
+        // setInterval(()=> {
+		// 	updatePositionBody();
 			// check if the game is lost
-			if (snakePosX >= 800 || snakePosX <0 || snakePosY >=400 || snakePosY <0) {
-					gameLost = true;
-			}
 			if (snakeDirection === "rotateRight"){
-			snakePosX += squareSize;
+				oldSnakePosX = snakePosX;
+				snakePosX += squareSize;
 			}
 			if (snakeDirection === "rotateLeft"){
-			snakePosX -= squareSize;
+				oldSnakePosX = snakePosX;
+				snakePosX -= squareSize;
 			}
 			if (snakeDirection === "rotateBottom"){
+				oldSnakePosY = snakePosY;
 				snakePosY += squareSize;
 			}
 			if (snakeDirection === "rotateTop"){
+				oldSnakePosY = snakePosY;
 				snakePosY -= squareSize;
 			}
-			collide()
-        },1000)
-  }
+		// 	collide()
+        // },1000)
+  	}
+
+  	function collide() {
+		if (snakePosX >= 800 || snakePosX <0 || snakePosY >=400 || snakePosY <0) {
+					gameLost = true;
+		}
+	}
 //   makeAutomaticMove();
+
+	(function gameLoop(){
+		setInterval(() => {
+			move();
+			eating();
+			collide();
+			updatePositionBody();
+		},500)
+	})();
 //   automatic move
 
 	// function randomPos(max) {

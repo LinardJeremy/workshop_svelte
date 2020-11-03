@@ -58,7 +58,7 @@ export let bodyPart = [];
 
 </div>
 {#each bodyPart as snakeBody, i}
-<div  class="snake" style="left :{snakeBody.left}px; top:{snakeBody.top}px;">
+<div  class="snake" style="left :{snakeBody.x}px; top:{snakeBody.y}px;">
 
 </div>
 {/each}
