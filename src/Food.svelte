@@ -18,5 +18,4 @@ export let imgSrc = "./img/mouse.png";
 </style>
 <div class="food" id="food" style="left :{posFoodLeft}px; top:{posFoodTop}px;">
   <img class="imgFood" src={imgSrc} alt="mouse">
-
 </div>

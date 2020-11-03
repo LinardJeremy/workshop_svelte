@@ -1,4 +1,3 @@
-
 <script contexte="module">
      export function handleClick(){
        alert("salut");

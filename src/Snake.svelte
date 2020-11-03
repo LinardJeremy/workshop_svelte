@@ -1,9 +1,7 @@
 <script>
 export let snake = 'snake';
-export let pos ;
-export let posTop ;
 export let rotation ; 
-export let bodyPart = [];
+export let snakeBody = [];
 
 
 </script>
@@ -11,8 +9,8 @@ export let bodyPart = [];
     .snake{
         background-color: green;
         position: absolute;
-        height: 40px;
-        width: 40px;
+        height: 39px;
+        width: 39px;
         border : black solid 1px;
         
     }
@@ -23,44 +21,44 @@ export let bodyPart = [];
         border-radius: 50%;
         position:relative;
         top: 8px;
-        left: 5px;
+        left: 25px;
     }
     .eyes2 {
         background-color: red;
         height: 10px;
         width: 10px;
         border-radius: 50%;
-        position:relative;
+        position: relative;
         top: 16px;
-        left: 5px;
+        left: 25px;
     }
     .rotateRight{
-        transform: rotate(180deg);
-    }
-    .rotateLeft {
         transform: rotate(0deg);
     }
+    .rotateLeft {
+        transform: rotate(180deg);
+    }
     .rotateTop {
-        transform: rotate(90deg);
+        transform: rotate(270deg);
     }
     .rotateBottom {
-        transform : rotate(270deg)
+        transform : rotate(90deg)
     }
     </style>
 
-<div class="snake {rotation}" id={snake} style="left :{pos}px; top:{posTop}px;">
-<div class="eyes">
-    
-</div>
-<div class="eyes2">
 
-</div>
-
-</div>
-{#each bodyPart as snakeBody, i}
-<div  class="snake" style="left :{snakeBody.x}px; top:{snakeBody.y}px;">
-
-</div>
+{#each snakeBody as part, i}
+    {#if i === 0}
+        <div class="snake {rotation}" id={snake} style="left :{part.x}px; top:{part.y}px; z-index: 20">
+            <div class="eyes">         
+            </div>
+            <div class="eyes2">
+            </div>
+        </div>
+    {:else}
+        <div  class="snake" style="left :{part.x}px; top:{part.y}px; z-index: 10;">
+        </div>
+    {/if}
 {/each}
 
 
