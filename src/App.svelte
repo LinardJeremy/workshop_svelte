@@ -16,12 +16,16 @@
 	$: gameLost =  false;
 	$: bodyPart = [{
         top : 0,
-        left : 40
+        left : 0
     },
     {
         top :0,
-        left :80
-    }   
+        left :0
+	},
+	{
+		top:0,
+		left: 0
+	} 
 ]
 
 function collide(){
@@ -36,26 +40,35 @@ function collide(){
 		}
 	 }
 		
-	//  follow the snake
+	//  body follow the snake
 
 	function updatePositionBody(){
 		for (let i=0; i<bodyPart.length; i++){
 			bodyPart[i].left= snakePosX;
 			bodyPart[i].top= snakePosY;
-			if (i === 1 && snakeDirection === "rotateRight"){
-				bodyPart[i].left = (snakePosX - squareSize);
+			if ( i >=1 && snakeDirection === "rotateRight"){
+				bodyPart[i].left = (snakePosX - (squareSize * i));
 			}
-			if (i === 1 && snakeDirection === "rotateRight"){
+			if ( i>=1 && snakeDirection === "rotateLeft"){
+				bodyPart[i].left = (snakePosX + (squareSize * i));
 
 			}
+			if (i>=1 && snakeDirection ==="rotateTop"){
+				bodyPart[i].left = snakePosX;
+				bodyPart[i].top = (snakePosY - (squareSize *i));
+			}
+			if (i>=1 && snakeDirection ==="rotateBottom"){
+				bodyPart[i].left = snakePosX;
+				bodyPart[i].top = (snakePosY  + (squareSize *i));
+			}
+			
 		}
 	}
 	 
      
-
+// listen keyboard
 	function handleKeydown(event) {
 		randomPos(gameWidth);
-		updatePositionBody();
 		let keyCode = event.keyCode;
 		// right = 39
 		if (keyCode === 39){
@@ -86,7 +99,9 @@ function collide(){
 		// 		foodPosX = randomPos(gameWidth);
 		// 		score +=1
 		// }
-		collide()
+		collide();
+		updatePositionBody();
+
 	}
 	
     
@@ -114,7 +129,7 @@ function collide(){
 			collide()
         },1000)
   }
-  makeAutomaticMove();
+//   makeAutomaticMove();
 //   automatic move
 
 	// function randomPos(max) {
