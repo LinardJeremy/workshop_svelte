@@ -1,13 +1,12 @@
 <script>
-    export let xPos;
-    export let yPos;
+    export let x;
+    export let y;
+    export let size;
     export let imgSrc = "./img/mouse.png";
 </script>
 
 <style>
     .food {
-        height: 40px;
-        width: 40px;
         position: absolute;
     }
     .imgFood {
@@ -17,6 +16,6 @@
     
 </style>
 
-<div class="food" id="food" style="left :{xPos}px; top:{yPos}px;">
+<div class="food" id="food" style="width: {size}px; height: {size}px; left :{x}px; top:{y}px;">
     <img class="imgFood" src={imgSrc} alt="mouse">
 </div>

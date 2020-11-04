@@ -2,16 +2,16 @@
 	import Game from "./components/Game.svelte";
 
 	let game = {
-		width : 600,
-		height : 400,
-		squareSize : 40,
+		width : (typeof window.innerWidth != 'undefined' && window.innerWidth > 768) ? 600 : 300,
+		height : (typeof window.innerWidth != 'undefined' && window.innerWidth > 768) ? 400 : 450,
+		squareSize : (typeof window.innerWidth != 'undefined' && window.innerWidth > 768) ? 40 : 30,
 	};
 
 	function gameInit() {
 		game = {
-			width : 600,
-			height : 400,
-			squareSize : 40,
+			width : (typeof window.innerWidth != 'undefined' && window.innerWidth > 768) ? 600 : 300,
+			height : (typeof window.innerWidth != 'undefined' && window.innerWidth > 768) ? 400 : 450,
+			squareSize : (typeof window.innerWidth != 'undefined' && window.innerWidth > 768) ? 40 : 30,
 		};
 	};
 </script>
