@@ -1,34 +1,22 @@
 <script>
     export let body = [];
     export let direction ;
+    export let size;
 </script>
 
 <style>
     .snake{
         background-color: green;
         position: absolute;
-        height: 39px;
-        width: 39px;
         border : black solid 1px;
         
     }
     .eye {
         background-color: red;
-        height: 10px;
-        width: 10px;
+        height: 25%;
+        width: 25%;
         border-radius: 50%;
         position:relative;
-        top: 8px;
-        left: 25px;
-    }
-    .eye2 {
-        background-color: red;
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
-        position: relative;
-        top: 16px;
-        left: 25px;
     }
     .right{
         transform: rotate(0deg);
@@ -46,14 +34,14 @@
 
 {#each body as part, i}
     {#if i === 0}
-        <div class="snake {direction}" style="left :{part.x}px; top:{part.y}px; z-index: 20">
-            <div class="eye">         
+        <div class="snake {direction}" style="width: {size-1}px; height: {size-1}px; left: {part.x}px; top: {part.y}px; z-index: 20">
+            <div class="eye" style="top: {size/5}px; left: {size*5/8}px">         
             </div>
-            <div class="eye2">
+            <div class="eye" style="top: {size*2/5}px; left: {size*5/8}px">
             </div>
         </div>
     {:else}
-        <div  class="snake" style="left :{part.x}px; top:{part.y}px; z-index: 10;">
+        <div  class="snake" style="width: {size-1}px; height: {size-1}px; left :{part.x}px; top:{part.y}px; z-index: 10;">
         </div>
     {/if}
 {/each}

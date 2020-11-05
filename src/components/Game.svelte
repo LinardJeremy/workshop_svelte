@@ -1,13 +1,19 @@
 <script>
     import Snake from "./Snake.svelte";
+<<<<<<< HEAD
     import Food  from "./Food.svelte";
+=======
+    import Food from "./Food.svelte";
+
+>>>>>>> f5417f4d9adfe887d61ec30455b711b1eb366c66
     export let width;
     export let height;
     export let squareSize;
-    export let score = 0;
-    export let isLost = false;
-    export let choosedDirection = false;
-    export let timer = 500;
+
+    let score = 0;
+    let isLost = false;
+    let choosedDirection = false;
+    let timer = 500;
     let loop;
 
     $: snake = {
@@ -29,13 +35,31 @@
             }
         ],
         direction : "right",
+        size : squareSize,
     };
 
     $: food = {
-        xPos : 80,
-        yPos : 80,
+        x : 2*squareSize,
+        y : 2*squareSize,
+        size : squareSize,
     }
 
+    // Game loop to handle the interval of the game
+
+    function gameLoop() {
+        (loop !== null) && clearInterval(loop);
+        loop = setInterval(() => {
+            move();
+            eatingTest();
+            losingTest();
+        }, timer)
+    }
+
+    // Main functions for the gameloop
+
+    /**
+     * Moves each snake bodyparts based on the snake direction
+     */
     function move() {
         for (let i = 0; i < snake.body.length; i++) {
             snake.body[i].oldX = snake.body[i].x;
@@ -61,15 +85,17 @@
         choosedDirection = false;
     }
 
-    function eat() {
-        if (snake.body[0].x < food.xPos + squareSize &&
-			snake.body[0].x + squareSize > food.xPos &&
-			snake.body[0].y < food.yPos + squareSize &&
-			snake.body[0].y + squareSize > food.yPos) {
-				console.log("Miam");
-				food.xPos = randomPos(width, squareSize);
-				food.yPos = randomPos(height, squareSize);
+    /**
+     * Tests if the snake eats food, if so:
+     * - increases the score
+     * - decreases the timer and restart the gameLoop
+     * - creates another food
+     * - makes the snake grows
+     */
+    function eatingTest() {
+        if (collide(snake.body[0], food)) {
                 score +=1;
+                food = getFood();
                 if (timer > 200) {
 					timer -= 20;
 					gameLoop();
@@ -80,28 +106,73 @@
 					oldX : snake.body[snake.body.length - 1].oldX,
 					oldY : snake.body[snake.body.length - 1].oldY,
                 }];
-            }
+        }
     }
 
-    function collide() {
+    /**
+     * Tests if the snake collide with the border or with himself, if so:
+     * - sets isLost to true
+     * - clears the loop interval
+     */
+    function losingTest() {
         if (snake.body[0].x >= width || snake.body[0].x <0 || snake.body[0].y >= height || snake.body[0].y <0) {
-				isLost = true;
-			}
-        snake.body.forEach((bodypart, i) => {
-            if ((i !== 0) && (snake.body[0].x < bodypart.x + squareSize &&
-                snake.body[0].x + squareSize > bodypart.x &&
-                snake.body[0].y < bodypart.y + squareSize &&
-                snake.body[0].y + squareSize > bodypart.y)) {
+                isLost = true;
+                clearInterval(loop);
+        } else {
+            snake.body.forEach((bodypart, i) => {
+                if ((i !== 0) && collide(snake.body[0], bodypart)) {
                     isLost = true;
-            }
-        });
+                    clearInterval(loop);
+                }
+            })
+        };
     }
 
-    function randomPos(max, square) {
-		let pos = (Math.floor(Math.random() * ((max/square) - 1)) * square);
+
+    // Utility functions
+
+    /**
+     * Tests if 2 rectangles collide
+     * @param {Object} rect1 An object with x and y keys
+     * @param {Object} rect2 An object with x and y keys
+     * @return {Boolean} true if rect1 and rect2 collide
+    */
+    function collide(rect1, rect2) {
+        if (rect1.x < rect2.x + squareSize &&
+            rect1.x + squareSize > rect2.x &&
+            rect1.y < rect2.y + squareSize &&
+            rect1.y + squareSize > rect2.y) {
+                   return true;
+        }
+    }
+
+    /**
+     * Generates a food with random x and y positions
+     * Recursively calls itself until it creates a food that doesn't collide with the snake
+     * @return the food or the function itself
+     */
+    function getFood() {
+        let tempFood = { x : randomPos(width), y : randomPos(height), size : squareSize };
+        for (let i = 0; i < snake.body.length; i++) {
+            if (!collide(tempFood, snake.body[i])) {
+                return tempFood;
+            }
+        };
+        return getFood();
+    }
+
+    /**
+     * Generates a random multiple of squareSize between 0 and the parameter
+     * @param {Number} max The maximum range value
+     * @return {Number} the random number
+     */
+    function randomPos(max) {
+		let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
 		return pos;
     }
     
+    // Event listener
+
     function handleKeydown(event) {
 		let keyCode = event.keyCode;
 		if (!choosedDirection && !isLost) {
@@ -128,20 +199,12 @@
 		}
     }
 
-    function gameLoop() {
-        if (loop !== null) {
-				clearInterval(loop);
-			};
-        loop = setInterval(() => {
-            move();
-            eat();
-            collide();
-        }, timer)
-    }
+    // Automaticaly calls the game loop when the component is loaded
 
     (() => {
         gameLoop();
     })();
+
 </script>
 
 <style>
