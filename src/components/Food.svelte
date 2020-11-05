@@ -19,3 +19,4 @@
 <div class="food" id="food" style="width: {size}px; height: {size}px; left :{x}px; top:{y}px;">
     <img class="imgFood" src={imgSrc} alt="mouse">
 </div>
+
