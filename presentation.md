@@ -63,10 +63,11 @@ Expliquer balise svelte windows  ce qu'elle fait, et à quoi elle sert . déclar
 <!-- jeremy -->
 
 <!-- JC -->
-Montrer la function collide  expliquer brièvement, ce qu'elle prend en paramètres et à quoi elle va nous servir pas rentrer dans les détails du calcul, normalement ils connaissent. (peut -être la mettre dans un fichier séparé)
+Montrer la function collide  expliquer brièvement, ce qu'elle prend en paramètres et à quoi elle va nous servir pas rentrer dans les détails du calcul, normalement ils connaissent. (peut -être la mettre dans un fichier séparé) plus explication de la fonction losingtest. donc après ça le serpent ne peut plus dépasser les bords et ne peut plus se toucher pas oublier la petite condition html pour indiquer que la partie est perdue. 
 <!-- JC -->
 
 <!-- Bastien -->
 Présentation de la fonction eatingtest et de la fonction getFood si d'ici là elle existe toujours.
+Explication et création du bouton restart + explication du responsive. 
 <!-- Bastien -->
 

@@ -12,6 +12,7 @@
     let choosedDirection = false;
     let timer = 500;
     let loop;
+    let radioColor = "green";
 
     /**
      * The snake object
@@ -234,7 +235,7 @@
 
 <section class="gameArea" style="width: {width}px; height: {height}px;">
     {#if !isLost}
-        <Snake {...snake}/>
+        <Snake {...snake} colorSnake={radioColor}/>
         <Food {...food}/>
     {:else}
         <h2 in:fade>Game lost !!!</h2>
@@ -249,5 +250,17 @@
 	{/if}
 </section>
 <p>Score : {score}</p>
+<!-- add input checkbox for the snake color -->
+ <h3>Choose the snake's color</h3>
+<label>
+	<input type=radio bind:group={radioColor} value="green">
+	Green
+</label><label>
+	<input type=radio bind:group={radioColor} value="yellow">
+	Yellow
+</label><label>
+	<input type=radio bind:group={radioColor} value="blue">
+	Blue
+</label>
 
 <svelte:window on:keydown={handleKeydown}/>
