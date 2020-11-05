@@ -1,10 +1,11 @@
 <script>
     import Snake from "./Snake.svelte";
     import Food from "./Food.svelte";
+    import { fade, fly } from 'svelte/transition';
 
-    export let width;
-    export let height;
-    export let squareSize;
+    export let width = 600;
+    export let height = 400;
+    export let squareSize = 40;
 
     let score = 0;
     let isLost = false;
@@ -12,6 +13,12 @@
     let timer = 500;
     let loop;
 
+    /**
+     * The snake object
+     * .body is an array of objects containing every bodypart of the snake, the first element is the head
+     * .direction is a string the snake is currently facing (right, left, up, down)
+     * .size is the size of the square representing a bodypart
+    */
     $: snake = {
         body : [{
                 x: 0,
@@ -34,9 +41,14 @@
         size : squareSize,
     };
 
+    /**
+     * The food object
+     * .x and .y are numbers representing the coordinates of the food
+     * .size is the size of the square representing the food
+    */
     $: food = {
-        x : 2*squareSize,
-        y : 2*squareSize,
+        x : randomPos(width),
+        y : randomPos(height),
         size : squareSize,
     }
 
@@ -140,6 +152,7 @@
             rect1.y + squareSize > rect2.y) {
                    return true;
         }
+        return false;
     }
 
     /**
@@ -149,12 +162,17 @@
      */
     function getFood() {
         let tempFood = { x : randomPos(width), y : randomPos(height), size : squareSize };
-        for (let i = 0; i < snake.body.length; i++) {
-            if (!collide(tempFood, snake.body[i])) {
-                return tempFood;
+        let doesNotCollide = true;
+        for (let i = 0; i < snake.body.length && doesNotCollide === true; i++) {
+            if (collide(tempFood, snake.body[i])) {
+                doesNotCollide = false;
             }
         };
-        return getFood();
+        if (doesNotCollide) {
+            return tempFood;
+        } else {
+            return getFood();
+        }
     }
 
     /**
@@ -207,6 +225,10 @@
 	.gameArea {
         position: relative;
         border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 
@@ -215,7 +237,15 @@
         <Snake {...snake}/>
         <Food {...food}/>
     {:else}
-		<h2>Game lost !!!</h2>
+        <h2 in:fade>Game lost !!!</h2>
+        <p in:fly="{{ x: 100, duration: 1000 }}">Your score is {score}</p>
+        {#if score < 10}
+            <p in:fly="{{ y: 100, duration: 2000 }}">You can do better</p>
+        {:else if score >= 10 && score < 20}
+            <p in:fly="{{ y: 100, duration: 2000 }}">It's okay-tier</p>
+        {:else}
+            <p in:fly="{{ y: 100, duration: 2000 }}">Well done</p>
+        {/if}
 	{/if}
 </section>
 <p>Score : {score}</p>

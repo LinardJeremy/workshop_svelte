@@ -2,7 +2,7 @@
     export let x;
     export let y;
     export let size;
-    export let imgSrc = "./img/mouse.png";
+    let imgSrc = "./img/mouse.png";
 </script>
 
 <style>
