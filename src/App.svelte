@@ -1,5 +1,7 @@
 <script>
-	import Game from "./components/Game.svelte";
+	import { bind } from "svelte/internal";
+import Game from "./components/Game.svelte";
+	// let nickname = '';
 
 	let game = {
 		width : 600,
@@ -18,6 +20,8 @@
 
 <main>
 	<h1>Snake</h1>
+	<!-- <h2>Hello {nickname || 'stranger'}</h2> -->
+	<!-- <input bind:value={nickname} placeholder="enter your nickname"> -->
 	{#key game}
 		<Game {...game}/>
 	{/key}

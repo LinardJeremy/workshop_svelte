@@ -1,6 +1,6 @@
 <script>
     import Snake from "./Snake.svelte";
-    import Food from "./Food.svelte";
+    import Food  from "./Food.svelte";
     export let width;
     export let height;
     export let squareSize;

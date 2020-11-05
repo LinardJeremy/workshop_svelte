@@ -20,3 +20,4 @@
 <div class="food" id="food" style="left :{xPos}px; top:{yPos}px;">
     <img class="imgFood" src={imgSrc} alt="mouse">
 </div>
+
