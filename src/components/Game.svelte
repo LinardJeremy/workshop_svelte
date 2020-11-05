@@ -1,12 +1,7 @@
 <script>
     import Snake from "./Snake.svelte";
-<<<<<<< HEAD
-    import Food  from "./Food.svelte";
-=======
     import Food from "./Food.svelte";
-
->>>>>>> f5417f4d9adfe887d61ec30455b711b1eb366c66
-    export let width;
+     export let width;
     export let height;
     export let squareSize;
 

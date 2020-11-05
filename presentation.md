@@ -54,19 +54,19 @@ Ensuite explication création snake, expliction boucle foreach, expliquer que le
 Déclaration du component food, mention l'image du repo(souris) explication du random fichier séparé, montrer que le random marche en actualisant la souris va apparaître à des endroits différents.
 <!-- Marie -->
  
-Expliquer balise svelte windows  ce qu'elle fait, et à quoi elle sert . déclarer la fonction qui décide des mouvements, ne pas oublier la déclaration des variables, et l'attribution des nouvelles valeurs de component . 
+ Avant de faire ça, création de la game loop sinon rien ne va bouger !!!
+ <!-- jeremy -->
+Expliquer balise svelte windows  ce qu'elle fait, et à quoi elle sert . déclarer la fonction qui décide des mouvements. expliquer la fonctionne qui permet les mouvements(fonction move et handlekeydown)
 
--A ce stade ils doivent pouvoir faire bouger le div serpent à l'aide des flèches du clavier.
+-A ce stade ils doivent pouvoir faire bouger le div serpent à l'aide des flèches du clavier. le serpent bouge tout seul. 
 
-Montrer le rotate de la tête (plus un principe css que js), montrer la déclaration des classes css qui sont faites directement dans le component. Ne pas oublier de dire que le style déclarer dans le component prend la priorité sur le style déclarer ailleurs. 
+<!-- jeremy -->
 
-- A ce stade les yeux changent de direction selon la touche, la direction choisie.
+<!-- JC -->
+Montrer la function collide  expliquer brièvement, ce qu'elle prend en paramètres et à quoi elle va nous servir pas rentrer dans les détails du calcul, normalement ils connaissent. (peut -être la mettre dans un fichier séparé)
+<!-- JC -->
 
-Montrer function collide(), ne pas oublier la déclaration du collide là où il faut. ne pas oublier de faire score +1 à chaque collide. Et le repop des foods après chaque collide.
-
-Montrer la function avancement automatique du serpent selon, la direction choisies.
-
-Expliquer, montrer la détection de la partie lost, si on dépasse le cadre. Profiter pour expliquer la possibilité de créer des conditions dans le code html avec svelte. Afficher message game lost si le bord est dépassé. 
-
-Ensuite en principe on doit montrer la création, mais qui n'est pas fonctionnelle encore chez nous. Qui va tout permmetre la fonction foreach version svelte.
+<!-- Bastien -->
+Présentation de la fonction eatingtest et de la fonction getFood si d'ici là elle existe toujours.
+<!-- Bastien -->
 
