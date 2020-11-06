@@ -3,10 +3,12 @@
     import Food from "./Food.svelte";
     import { fade, fly } from 'svelte/transition';
 
+    // Props of the game
     export let width = 600;
     export let height = 400;
     export let squareSize = 40;
 
+    // Variables of the game
     let score = 0;
     let isLost = false;
     let choosedDirection = false;
@@ -20,7 +22,7 @@
      * .direction is a string the snake is currently facing (right, left, up, down)
      * .size is the size of the square representing a bodypart
     */
-    $: snake = {
+    let snake = {
         body : [{
                 x: 0,
                 y: 0,
@@ -47,13 +49,13 @@
      * .x and .y are numbers representing the coordinates of the food
      * .size is the size of the square representing the food
     */
-    $: food = {
+    let food = {
         x : randomPos(width),
         y : randomPos(height),
         size : squareSize,
     }
 
-    // Game loop to handle the interval of the game
+    // Game loop to handle the interval of the game -----------------------------------------
 
     function gameLoop() {
         (loop !== null) && clearInterval(loop);
@@ -64,7 +66,7 @@
         }, timer)
     }
 
-    // Main functions for the gameloop
+    // Main functions for the gameloop -------------------------------------------------------
 
     /**
      * Moves each snake bodyparts based on the snake direction
@@ -138,7 +140,7 @@
     }
 
 
-    // Utility functions
+    // Utility functions -------------------------------------------------------
 
     /**
      * Tests if 2 rectangles collide
@@ -186,10 +188,13 @@
 		return pos;
     }
     
-    // Event listener
+    // Event listener -------------------------------------------------------
 
     function handleKeydown(event) {
-		let keyCode = event.keyCode;
+        let keyCode = event.keyCode;
+        if (event.target.type === "radio") {
+            event.preventDefault();
+        }
 		if (!choosedDirection && !isLost) {
 			// right = 39
 			if (keyCode === 39 && snake.direction !== "left"){
@@ -214,7 +219,7 @@
 		}
     }
 
-    // Automaticaly calls the game loop when the component is loaded
+    // Automaticaly calls the game loop when the component is loaded ----------
 
     (() => {
         gameLoop();
@@ -223,44 +228,78 @@
 </script>
 
 <style>
-	.gameArea {
-        position: relative;
-        border: 1px solid black;
+    section {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
+	.gameArea {
+        position: relative;
+        border: 1px solid black;
+    }
+    input:focus {
+        outline: none;
+    }
+    .colorField {
+        display: flex;
+
+    }
+    .colorField label {
+        margin: 0 1rem 1rem 1rem;
+    }
 </style>
 
+<!-- Section game area -->
 <section class="gameArea" style="width: {width}px; height: {height}px;">
+    <!-- If block to test if the game is not lost -->
     {#if !isLost}
+        <!-- Snake component -->
         <Snake {...snake} colorSnake={radioColor}/>
+        <!-- /Snake -->
+        <!-- Food component -->
         <Food {...food}/>
+        <!-- /Food -->
+    <!-- Else (if the game is lost) -->
     {:else}
         <h2 in:fade>Game lost !!!</h2>
         <p in:fly="{{ x: 100, duration: 1000 }}">Your score is {score}</p>
         {#if score < 10}
             <p in:fly="{{ y: 100, duration: 2000 }}">You can do better</p>
         {:else if score >= 10 && score < 20}
-            <p in:fly="{{ y: 100, duration: 2000 }}">It's okay-tier</p>
+            <p in:fly="{{ y: 100, duration: 2000 }}">That's okay</p>
         {:else}
             <p in:fly="{{ y: 100, duration: 2000 }}">Well done</p>
         {/if}
-	{/if}
+    {/if}
+    <!-- /If -->
 </section>
-<p>Score : {score}</p>
-<!-- add input checkbox for the snake color -->
- <h3>Choose the snake's color</h3>
-<label>
-	<input type=radio bind:group={radioColor} value="green">
-	Green
-</label><label>
-	<input type=radio bind:group={radioColor} value="yellow">
-	Yellow
-</label><label>
-	<input type=radio bind:group={radioColor} value="blue">
-	Blue
-</label>
+<!-- /Section -->
+<!-- Section bonus -->
+<section>
+    <!-- Score display -->
+    <h2>Score : {score}</h2>
+    <!-- /Score -->
+    <!-- Snake's color picker -->
+    <p>Snake's color :</p>
+    <div class="colorField">
+        <label>
+            <input type=radio bind:group={radioColor} value="green">
+            Green
+        </label>
+        <label>
+            <input type=radio bind:group={radioColor} value="yellow">
+            Yellow
+        </label>
+        <label>
+            <input type=radio bind:group={radioColor} value="blue">
+            Blue
+        </label>
+    </div>
+    <!-- /Snake's color picker -->
+</section>
+<!-- /Section-->
 
+<!-- Keydown event listener -->
 <svelte:window on:keydown={handleKeydown}/>
+<!-- /Keydown -->
