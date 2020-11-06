@@ -260,7 +260,7 @@
         <!-- Food component -->
         <Food {...food}/>
         <!-- /Food -->
-    <!-- Else (if the game is lost) -->
+    <!-- Else game is lost) -->
     {:else}
         <h2 in:fade>Game lost !!!</h2>
         <p in:fly="{{ x: 100, duration: 1000 }}">Your score is {score}</p>
