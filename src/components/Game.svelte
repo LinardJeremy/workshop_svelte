@@ -2,6 +2,7 @@
     import Snake from "./Snake.svelte";
     import Food from "./Food.svelte";
     import { fade, fly } from 'svelte/transition';
+    import { randomPos } from './Random.svelte'
 
     export let width = 600;
     export let height = 400;
@@ -12,7 +13,7 @@
     let choosedDirection = false;
     let timer = 500;
     let loop;
-    let radioColor = "green";
+    $: radioColor = "green";
 
     /**
      * The snake object
@@ -48,8 +49,8 @@
      * .size is the size of the square representing the food
     */
     $: food = {
-        x : randomPos(width),
-        y : randomPos(height),
+        x : randomPos(width, squareSize),
+        y : randomPos(height,squareSize),
         size : squareSize,
     }
 
@@ -181,10 +182,10 @@
      * @param {Number} max The maximum range value
      * @return {Number} the random number
      */
-    function randomPos(max) {
-		let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
-		return pos;
-    }
+    // function randomPos(max) {
+	// 	let pos = (Math.floor(Math.random() * ((max/squareSize) - 1)) * squareSize);
+	// 	return pos;
+    // }
     
     // Event listener
 

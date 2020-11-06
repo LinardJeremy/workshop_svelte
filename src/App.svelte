@@ -1,6 +1,7 @@
 <script>
 	import { bind } from "svelte/internal";
-import Game from "./components/Game.svelte";
+	import Game from "./components/Game.svelte";
+
 	// let nickname = '';
 
 	let game = {
@@ -26,6 +27,7 @@ import Game from "./components/Game.svelte";
 		<Game {...game}/>
 	{/key}
 	<button on:click={gameInit}>Restart</button>
+	<!-- add input checkbox for the snake color -->
 </main>
 
 <style>
